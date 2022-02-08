@@ -1,6 +1,7 @@
 package com.example.task_eternals_android.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +49,11 @@ final CategoryModel item = categories.get(position);
 @Override
 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (b){
-        System.out.println("Oncreateviewv");
-        mDb.updateStatus(item.getId(), 1);
+                //Intent intent = new Intent(activity, TaskActivity.class);
+               // getContext().startActivity(intent);
         }else {
+                //Intent intent = new Intent(activity, TaskActivity.class);
+                //getContext().startActivity(intent);
         System.out.println("Oncreateview");
         mDb.updateStatus(item.getId(), 0);
         }
