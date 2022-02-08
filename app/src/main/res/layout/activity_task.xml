@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="right"
+    android:clickable="true"
+    tools:context=".TaskActivity">
+
+    <TextView
+        android:id="@+id/txtViewTasks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="All Tasks"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtViewTasks"
+        android:layout_alignParentEnd="true"
+        android:baselineAligned="false"
+        />
+
+    <TextView
+        android:id="@+id/textViewSort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchBar"
+        android:padding="10dp"
+        android:text="SortBy"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/sortSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchBar"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@id/textViewSort" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tasksRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSort"
+        android:nestedScrollingEnabled="true"
+        android:paddingHorizontal="15dp" />
+
+    <Button
+        android:id="@+id/addTaskBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="ADD TASK"
+        android:textSize="20dp" />
+
+
+</RelativeLayout>

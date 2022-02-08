@@ -16,6 +16,7 @@ import com.example.task_eternals_android.AddNewCategory;
 import com.example.task_eternals_android.MainActivity;
 import com.example.task_eternals_android.Model.CategoryModel;
 import com.example.task_eternals_android.R;
+import com.example.task_eternals_android.TaskActivity;
 import com.example.task_eternals_android.Utilities.DBHelper;
 
 import java.util.List;
@@ -49,11 +50,11 @@ final CategoryModel item = categories.get(position);
 @Override
 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if (b){
-                //Intent intent = new Intent(activity, TaskActivity.class);
-               // getContext().startActivity(intent);
+                Intent intent = new Intent(activity, TaskActivity.class);
+                getContext().startActivity(intent);
         }else {
-                //Intent intent = new Intent(activity, TaskActivity.class);
-                //getContext().startActivity(intent);
+                Intent intent = new Intent(activity, TaskActivity.class);
+                getContext().startActivity(intent);
         System.out.println("Oncreateview");
         mDb.updateStatus(item.getId(), 0);
         }
