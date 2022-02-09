@@ -3,14 +3,19 @@ package com.example.task_eternals_android;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddNewTask extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
@@ -48,5 +53,33 @@ public class AddNewTask extends AppCompatActivity {
                 tvDates.setText(date);
             }
         };
+        tvTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(
+                        AddNewTask.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        new TimePickerDialog.OnTimeSetListener(){
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                tHour = hourOfDay;
+                                tMinute = minute;
+                                String time = tHour +":"+ tMinute;
+                                SimpleDateFormat f24Hours = new SimpleDateFormat("HH:mm");
+                                try {
+                                    Date date = f24Hours.parse(time);
+                                    SimpleDateFormat f12Hours = new SimpleDateFormat("hh:mm aa");
+                                    tvTimer.setText(f12Hours.format(date));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },12,0,false
+                );
+                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                timePickerDialog.updateTime(tHour,tMinute);
+                timePickerDialog.show();
+            }
+        });
     }
 }
