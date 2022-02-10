@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.task_eternals_android.Model.CategoryModel;
+import com.example.task_eternals_android.Model.TaskModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,9 +67,25 @@ public class DBHelper extends SQLiteOpenHelper {
             db.insert(TABLE_CATEGORIES,null, values);
         }
 
+        public void insertTask(TaskModel task){
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TASK_NAME, task.getTitle());
+            values.put(TASK_DESC, task.getDescription());
+            values.put(TASK_DUETIME, task.getDate());
+            values.put(TASK_DUETIME, task.getTime());
+            values.put(TASK_STATUS, task.getStatus());
+            db.insert(TABLE_TASKS,null, values);
+        }
+
         public void deleteCategory(int id){
             db = this.getWritableDatabase();
             db.delete(TABLE_CATEGORIES,"ID=?", new String[]{String.valueOf(id)});
+        }
+
+        public void deleteTask(int id){
+            db = this.getWritableDatabase();
+            db.delete(TABLE_TASKS, "ID=?", new String[]{String.valueOf(id)});
         }
 
         public void updateCategory(int id, String catName){
@@ -77,12 +94,28 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(CAT_STATUS, catName);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
         }
+        public void updateTask(int id, String taskTitle, String taskDescription, String dueDate, String dueTime){
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(TASK_NAME, taskTitle);
+            values.put(TASK_DESC, taskDescription);
+            values.put(TASK_DUETIME, dueDate);
+            values.put(TASK_DUETIME, dueTime);
+            db.update(TABLE_TASKS, values , "ID=?" , new String[]{String.valueOf(id)});
+        }
 
         public void updateStatus(int id, int status){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(CAT_NAME, status);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
+        }
+
+        public void updateTaskStatus(int id, int status){
+            db = this.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(CAT_STATUS, status);
+            db.update(TABLE_TASKS , values , "ID=?" , new String[]{String.valueOf(id)});
         }
 
 
@@ -110,5 +143,33 @@ public class DBHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
             return categories;
+        }
+
+        public List<TaskModel> getAllTasks(){
+            db = this.getWritableDatabase();
+            Cursor cursor = null;
+            List<TaskModel> tasks = new ArrayList<>();
+            db.beginTransaction();
+            try {
+                cursor = db.query(TABLE_TASKS, null, null, null,null,null,null);
+                if (cursor != null){
+                    if (cursor.moveToFirst()){
+                        do {
+                            TaskModel task = new TaskModel();
+                            task.setIdTask(cursor.getColumnIndex(TASK_ID));
+                            task.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TASK_NAME)));
+                            task.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DESC)));
+                            task.setDate(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUEDATE)));
+                            task.setTime(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUETIME)));
+                            task.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_STATUS)));
+                            tasks.add(task);
+                        }while (cursor.moveToNext());
+                    }
+                }
+            } finally {
+                db.endTransaction();
+                cursor.close();
+            }
+            return tasks;
         }
 }
