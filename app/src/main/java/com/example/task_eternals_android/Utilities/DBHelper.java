@@ -28,6 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String TASK_NAME = "NAME";
         private static final String TASK_STATUS = "STATUS";
         private static final String TASK_DUEDATE = "DUE_DATE";
+        private static final String TASK_DUETIME = "DUE_TIME";
         private static final String TASK_DESC = "DESCRIPTION";
         private static final String TASK_CATEGORY = "CATEGORY_NAME";
         private static final String TASK_AUDIO = "AUDIO";
@@ -44,14 +45,14 @@ public class DBHelper extends SQLiteOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "(" + CAT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + CAT_NAME + " TEXT," + CAT_STATUS + " INTEGER)");
-            //db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + TASK_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," + TASK_NAME + "TEXT," + TASK_STATUS + "TEXT," + TASK_DESC + "TEXT," + TASK_CATEGORY + "TEXT," + TASK_DUEDATE + "DATETIME," + TASK_AUDIO + "BLOB)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TASK_NAME + " TEXT," + TASK_STATUS + " TEXT," + TASK_DESC + " TEXT," + TASK_CATEGORY + " TEXT," + TASK_DUEDATE + " DATETIME,"+ TASK_DUETIME + " TEXT," + TASK_AUDIO + " BLOB)");
             //db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + "(" + IMAGE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," + IMG_TASK_ID + "INTEGER)");
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int i, int i1) {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORIES);
-            //db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_TASKS);
             //db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
 
             onCreate(db);
