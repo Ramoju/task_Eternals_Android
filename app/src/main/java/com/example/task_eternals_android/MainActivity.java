@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
                 AddNewCategory.newInstance().show(getSupportFragmentManager(), AddNewCategory.TAG);
             }
         });
-
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerViewHelper(adapter));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
 
     @Override
