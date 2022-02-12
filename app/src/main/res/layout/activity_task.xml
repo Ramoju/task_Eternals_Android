@@ -51,8 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewSort"
+        android:layout_marginTop="5dp"
         android:nestedScrollingEnabled="true"
-        android:paddingHorizontal="15dp" />
+        android:paddingHorizontal="10dp" />
 
     <Button
         android:id="@+id/addTaskBtn"

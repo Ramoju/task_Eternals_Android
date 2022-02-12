@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Task_Eternals_Android">
         <activity
-            android:name=".AddNewTask"
-            android:exported="true" />
-        <activity
             android:name=".TaskActivity"
             android:exported="true" />
         <activity

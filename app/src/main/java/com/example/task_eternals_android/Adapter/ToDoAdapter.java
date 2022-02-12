@@ -36,14 +36,12 @@ public ToDoAdapter(DBHelper db, MainActivity activity){
 @Override
 public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_card, parent, false);
-        System.out.println("Oncreateview");
         return new MyViewHolder(v);
         }
 
 @Override
 public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        System.out.println("OnBindview");
-final CategoryModel item = categories.get(position);
+        final CategoryModel item = categories.get(position);
         holder.categoryName.setText(item.getCategoryName());
         holder.categoryName.setChecked(toBoolean(item.getStatus()));
         holder.categoryName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -55,8 +53,6 @@ public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         }else {
                 Intent intent = new Intent(activity, TaskActivity.class);
                 getContext().startActivity(intent);
-        System.out.println("Oncreateview");
-        mDb.updateStatus(item.getId(), 0);
         }
         }
         });

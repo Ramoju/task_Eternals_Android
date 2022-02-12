@@ -50,7 +50,7 @@ public class AddNewCategory extends BottomSheetDialogFragment {
 
         boolean isUpdate = false;
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if (bundle != null) {
             isUpdate = true;
             String categoryname = bundle.getString("categoryname");

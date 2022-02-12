@@ -64,7 +64,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
         boolean isUpdate = false;
 
-        Bundle bundle = getArguments();
+        final Bundle bundle = getArguments();
         if(bundle  != null){
             isUpdate = true;
             String task = bundle.getString("task");
@@ -124,8 +124,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public void onDismiss(@NonNull DialogInterface dialog) {
         super.onDismiss(dialog);
         Activity activity = getActivity();
-        if(activity instanceof OnDialogCloseListener1){
-            ((OnDialogCloseListener1)activity).onDialogClose(dialog);
+        if(activity instanceof OnDialogCloseListener){
+            ((OnDialogCloseListener)activity).onDialogClose(dialog);
         }
     }
     //    @Override
