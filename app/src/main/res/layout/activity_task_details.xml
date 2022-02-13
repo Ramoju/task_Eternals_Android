@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskDetailsActivity">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/screentitlelabel"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text="Task Details"/>
+
+    <TextView
+        android:id="@+id/tasktitlelabel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/screentitlelabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="50dp"
+        android:text="Title:"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/screentitlelabel"
+        android:text="Book Tickets"
+        android:layout_toRightOf="@id/tasktitlelabel"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        android:layout_marginTop="50dp"
+        android:textSize="20sp"/>
+
+
+    <TextView
+        android:id="@+id/taskdescriptionlabel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tasktitlelabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Description:"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/taskdescriptiontxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tasktitlelabel"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_toRightOf="@id/taskdescriptionlabel"
+        android:text="DJ Tillu, Ee nagariniki emaindi, Ok OK, Robinhood, Test"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/duedatelabel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskdescriptiontxt"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="viewEnd"
+        android:text="Due Date:"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/duedatevalue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskdescriptiontxt"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/duedatelabel"
+        android:text="21 Oct 2021 09:30:00"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/categorylabel"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/duedatelabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="Category:"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/duedatevalue"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:text="Books"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_toRightOf="@id/categorylabel"
+        android:id="@+id/categoryvalue"/>
+
+
+    <TextView
+        android:id="@+id/audiolabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imagesRV"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:text="Audio"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/imageslabel"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categorylabel"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:text="Images"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imagesRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageslabel"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" />
+
+    <ImageView
+        android:id="@+id/attachimages"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_above="@id/imagesRV"
+        android:layout_below="@id/categoryvalue"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_toRightOf="@id/imageslabel"
+        android:src="@drawable/ic_baseline_add_a_photo_24" />
+
+
+    <Button
+        android:id="@+id/recordbtn"
+        android:layout_width="40dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/audiolabel"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_baseline_mic_24"
+        android:contentDescription="@string/record_audio" />
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_above="@id/seekbar"
+        android:layout_below="@id/audiolabel"
+        android:id="@+id/recordinggif"
+        android:layout_toRightOf="@id/recordbtn"
+        android:paddingStart="20dp"
+        android:src="@drawable/sound" />
+
+    <Button
+        android:id="@+id/playbtn"
+        android:layout_width="40dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/recordbtn"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ic_baseline_play_arrow_24"
+        android:contentDescription="@string/play_audio" />
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekbar"
+        android:progressTint="@color/black"
+        android:progressBackgroundTint="@color/black"
+        android:layout_toRightOf="@id/playbtn"
+        android:layout_below="@id/recordbtn"
+        android:layout_marginTop="25dp"/>
+
+
+
+
+
+</RelativeLayout>
