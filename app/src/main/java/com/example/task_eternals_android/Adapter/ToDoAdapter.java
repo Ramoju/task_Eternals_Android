@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,18 +44,13 @@ public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) 
 public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final CategoryModel item = categories.get(position);
         holder.categoryName.setText(item.getCategoryName());
-        holder.categoryName.setChecked(toBoolean(item.getStatus()));
-        holder.categoryName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-@Override
-public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-        if (b){
-                Intent intent = new Intent(activity, TaskActivity.class);
-                getContext().startActivity(intent);
-        }else {
-                Intent intent = new Intent(activity, TaskActivity.class);
-                getContext().startActivity(intent);
-        }
-        }
+        holder.categoryStatus.setChecked(toBoolean(item.getStatus()));
+        holder.categoryName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                        Intent intent = new Intent(activity, TaskActivity.class);
+                        getContext().startActivity(intent);
+                }
         });
         }
 
@@ -96,11 +92,13 @@ public void editCategory(int position){
 
 public static class MyViewHolder extends RecyclerView.ViewHolder{
 
-    CheckBox categoryName;
+    CheckBox categoryStatus;
+    TextView categoryName;
 
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
-        categoryName = itemView.findViewById(R.id.mcheckbox);
+        categoryName = itemView.findViewById(R.id.categoryname);
+        categoryStatus = itemView.findViewById(R.id.mcheckbox);
     }
 }
 }

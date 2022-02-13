@@ -38,7 +38,6 @@ public class RecyclerViewHelper extends ItemTouchHelper.SimpleCallback {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     adapter.deleteCategory(position);
-
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -49,10 +48,10 @@ public class RecyclerViewHelper extends ItemTouchHelper.SimpleCallback {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-}else {
-        adapter.editCategory(position);
+        }else {
+            adapter.editCategory(position);
 
-}
+        }
 
     }
 

@@ -91,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public void updateCategory(int id, String catName){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(CAT_STATUS, catName);
+            values.put(CAT_NAME, catName);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
         }
         public void updateTask(int id, String taskTitle, String taskDescription, String dueDate, String dueTime){
