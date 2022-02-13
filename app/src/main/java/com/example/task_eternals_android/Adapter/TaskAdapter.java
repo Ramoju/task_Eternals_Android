@@ -87,10 +87,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         task.setArguments(bundle);
         task.show(activity.getSupportFragmentManager() , task.getTag());
 
-
-
-
-
     }
 
     @Override

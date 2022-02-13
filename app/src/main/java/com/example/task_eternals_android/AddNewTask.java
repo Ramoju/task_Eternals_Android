@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.task_eternals_android.Model.CategoryModel;
 import com.example.task_eternals_android.Model.TaskModel;
 import com.example.task_eternals_android.Utilities.DBHelper;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -29,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AddNewTask extends BottomSheetDialogFragment {
     public static final String TAG = "AddNewTask";
@@ -104,12 +106,14 @@ public class AddNewTask extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String text = title.getText().toString();
+                String text1 = description.getText().toString();
 
                 if (finalIsUpdate){
-                    myDB.updateTask(bundle.getInt("id"), text, null, null, null);
+                    myDB.updateTask(bundle.getInt("id"), text, text1, null, null);
                 }else {
                     TaskModel item = new TaskModel();
                     item.setTitle(text);
+                    item.setDescription(text1);
                     item.setStatus(0);
                     myDB.insertTask(item);
                 }

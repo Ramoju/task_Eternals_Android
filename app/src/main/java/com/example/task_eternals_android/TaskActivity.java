@@ -1,6 +1,7 @@
 package com.example.task_eternals_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,9 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
                 AddNewTask.newInstance().show(getSupportFragmentManager() , AddNewTask.TAG);
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerViewHelperTask(adapter));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
     }
 
