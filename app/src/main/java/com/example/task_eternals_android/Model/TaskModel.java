@@ -1,8 +1,45 @@
 package com.example.task_eternals_android.Model;
 
-public class TaskModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TaskModel implements Parcelable {
     private String title, description, date, time;
     private int idTask, status;
+
+    protected TaskModel(Parcel in) {
+        title = in.readString();
+        description = in.readString();
+        date = in.readString();
+        time = in.readString();
+        idTask = in.readInt();
+        status = in.readInt();
+    }
+
+    public TaskModel(String title, String description, String date, String time, int idTask, int status) {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.time = time;
+        this.idTask = idTask;
+        this.status = status;
+    }
+
+    public static final Creator<TaskModel> CREATOR = new Creator<TaskModel>() {
+        @Override
+        public TaskModel createFromParcel(Parcel in) {
+            return new TaskModel(in);
+        }
+
+        @Override
+        public TaskModel[] newArray(int size) {
+            return new TaskModel[size];
+        }
+    };
+
+    public TaskModel() {
+
+    }
 
     public String getTitle() {
         return title;
@@ -50,5 +87,20 @@ public class TaskModel {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeString(date);
+        parcel.writeString(time);
+        parcel.writeInt(idTask);
+        parcel.writeInt(status);
     }
 }

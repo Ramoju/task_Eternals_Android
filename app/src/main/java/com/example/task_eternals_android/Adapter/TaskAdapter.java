@@ -1,12 +1,15 @@
 package com.example.task_eternals_android.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +44,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         final TaskModel item = mList.get(position);
-        holder.mCheckBox.setText(item.getTitle());
+        holder.taskname.setText(item.getTitle());
+        holder.duedate.setText(item.getDate() + " " + item.getTime());
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -96,9 +100,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public static class TaskViewHolder extends RecyclerView.ViewHolder{
         CheckBox mCheckBox;
+        TextView taskname;
+        TextView duedate;
         public TaskViewHolder(@NonNull View itemView) {
             super(itemView);
-            mCheckBox = itemView.findViewById(R.id.mcheckbox);
+            mCheckBox = itemView.findViewById(R.id.taskcheckbox);
+            taskname = itemView.findViewById(R.id.tasknamelabel);
+            duedate = itemView.findViewById(R.id.dueDate);
         }
     }
     public void filterList(List<TaskModel> filteredList){

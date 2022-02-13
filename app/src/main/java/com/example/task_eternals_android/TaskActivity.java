@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.example.task_eternals_android.Adapter.TaskAdapter;
 import com.example.task_eternals_android.Adapter.ToDoAdapter;
+import com.example.task_eternals_android.Model.CategoryModel;
 import com.example.task_eternals_android.Model.TaskModel;
 import com.example.task_eternals_android.Utilities.DBHelper;
 
@@ -28,6 +29,7 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
     private List<TaskModel> mList;
     private TaskAdapter adapter;
     SearchView searchView;
+    CategoryModel category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         mRecyclerView = findViewById(R.id.tasksRecyclerView);
         myDB = new DBHelper(TaskActivity.this);
         mList = new ArrayList<>();
+
+        category = getIntent().getParcelableExtra("category");
 
         adapter = new TaskAdapter(myDB,TaskActivity.this);
         mList = myDB.getAllTasks();

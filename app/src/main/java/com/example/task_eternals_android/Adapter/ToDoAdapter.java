@@ -49,6 +49,7 @@ public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
                 @Override
                 public void onClick(View view) {
                         Intent intent = new Intent(activity, TaskActivity.class);
+                        intent.putExtra("category", item);
                         getContext().startActivity(intent);
                 }
         });
@@ -98,7 +99,7 @@ public static class MyViewHolder extends RecyclerView.ViewHolder{
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
         categoryName = itemView.findViewById(R.id.categoryname);
-        categoryStatus = itemView.findViewById(R.id.mcheckbox);
+        categoryStatus = itemView.findViewById(R.id.categorycheckbox);
     }
 }
 }

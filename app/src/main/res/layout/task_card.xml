@@ -13,19 +13,29 @@
         android:padding="8dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/mcheckbox"
-            android:layout_width="match_parent"
+            android:id="@+id/taskcheckbox"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/cardview_dark_background"
             android:paddingStart="8dp"
-            android:text="This is Task 1" />
+            />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/taskcheckbox"
+            android:layout_marginTop="5dp"
+            android:id="@+id/tasknamelabel"
+            android:textSize="20sp"
+            android:text="Task 1"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/dueDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="42dp"
-            android:layout_marginTop="40dp"
+            android:layout_toRightOf="@id/taskcheckbox"
+            android:layout_below="@id/tasknamelabel"
             android:text="TextView" />
 
     </RelativeLayout>
