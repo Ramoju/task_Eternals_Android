@@ -101,4 +101,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             mCheckBox = itemView.findViewById(R.id.mcheckbox);
         }
     }
+    public void filterList(List<TaskModel> filteredList){
+        mList = filteredList;
+        notifyDataSetChanged();
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.task_eternals_android;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +27,14 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
     private DBHelper myDB;
     private List<TaskModel> mList;
     private TaskAdapter adapter;
+    SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task);
         addTask = findViewById(R.id.addTaskBtn);
+        searchView = findViewById(R.id.searchBar);
         mRecyclerView = findViewById(R.id.tasksRecyclerView);
         myDB = new DBHelper(TaskActivity.this);
         mList = new ArrayList<>();
@@ -60,7 +63,29 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new RecyclerViewHelperTask(adapter));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
+
+    }
+
+    private void filter(String newText) {
+        List<TaskModel> filteredList = new ArrayList<>();
+        for (TaskModel item : mList){
+            if(item.getTitle().toLowerCase().contains(newText.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+        adapter.filterList(filteredList);
     }
 
     @Override

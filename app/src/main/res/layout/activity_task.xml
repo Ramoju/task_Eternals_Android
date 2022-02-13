@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtViewTasks"
         android:layout_alignParentEnd="true"
-        android:baselineAligned="false"
-        />
+        android:baselineAligned="false" >
+    </androidx.appcompat.widget.SearchView>
 
     <TextView
         android:id="@+id/textViewSort"
