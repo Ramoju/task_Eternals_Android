@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class TaskModel implements Parcelable {
-    private String title, description, date, time;
+    private String title, description, date, time, category;
     private int idTask, status;
 
     protected TaskModel(Parcel in) {
@@ -16,13 +16,14 @@ public class TaskModel implements Parcelable {
         status = in.readInt();
     }
 
-    public TaskModel(String title, String description, String date, String time, int idTask, int status) {
+    public TaskModel(String title, String description, String date, String time, int idTask, int status, String category) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
         this.idTask = idTask;
         this.status = status;
+        this.category = category;
     }
 
     public static final Creator<TaskModel> CREATOR = new Creator<TaskModel>() {
@@ -87,6 +88,14 @@ public class TaskModel implements Parcelable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     @Override

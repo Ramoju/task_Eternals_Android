@@ -18,9 +18,11 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.task_eternals_android.Adapter.ImageAdapter;
+import com.example.task_eternals_android.Model.TaskModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +32,7 @@ import pl.droidsonroids.gif.GifImageView;
 public class TaskDetailsActivity extends AppCompatActivity {
 
     private Button playbtn, recordbtn, pausebtn, stopbtn;
+    private TextView categoryTv,titleTv,descriptionTv,dueDateTv;
     SeekBar seekbar;
     private static int MICROPHONE_PERMISSION_CODE = 1;
     private boolean isRecording;
@@ -37,6 +40,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     private static final int[] images = {R.drawable.chinesenoodles, R.drawable.chinesenoodles2, R.drawable.chinesenoodles3, R.drawable.chinesenoodles4, R.drawable.chineserice, R.drawable.chinesenoodles3, R.drawable.chineserice2};
 
 
+    TaskModel task;
     MediaPlayer mediaPlayer;
     MediaRecorder mediaRecorder;
     File file;
@@ -55,6 +59,10 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         System.out.println("third screen after view on create");
 
+        categoryTv = findViewById(R.id.categoryvalue);
+        titleTv = findViewById(R.id.tasktitlevalue);
+        dueDateTv = findViewById(R.id.duedatevalue);
+        descriptionTv = findViewById(R.id.taskdescriptiontxt);
         seekbar = findViewById(R.id.seekbar);
         recordbtn = findViewById(R.id.recordbtn);
         playbtn = findViewById(R.id.playbtn);
@@ -65,6 +73,12 @@ public class TaskDetailsActivity extends AppCompatActivity {
         recordingAnim.setVisibility(View.GONE);
         mediaPlayer = new MediaPlayer();
         mediaRecorder = new MediaRecorder();
+
+        task = getIntent().getParcelableExtra("task");
+        categoryTv.setText(task.getCategory());
+        titleTv.setText(task.getTitle());
+        descriptionTv.setText(task.getDescription());
+        dueDateTv.setText(task.getDate());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         RecyclerView recyclerView = findViewById(R.id.imagesRV);

@@ -72,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(TASK_NAME, task.getTitle());
             values.put(TASK_DESC, task.getDescription());
+            values.put(TASK_CATEGORY, task.getCategory());
             values.put(TASK_DUETIME, task.getDate());
             values.put(TASK_DUETIME, task.getTime());
             values.put(TASK_STATUS, task.getStatus());
@@ -94,11 +95,12 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(CAT_NAME, catName);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
         }
-        public void updateTask(int id, String taskTitle, String taskDescription, String dueDate, String dueTime){
+        public void updateTask(int id, String taskTitle, String taskDescription, String dueDate, String dueTime, String categoryName){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(TASK_NAME, taskTitle);
             values.put(TASK_DESC, taskDescription);
+            values.put(TASK_CATEGORY, categoryName);
             values.put(TASK_DUETIME, dueDate);
             values.put(TASK_DUETIME, dueTime);
             db.update(TABLE_TASKS, values , "ID=?" , new String[]{String.valueOf(id)});

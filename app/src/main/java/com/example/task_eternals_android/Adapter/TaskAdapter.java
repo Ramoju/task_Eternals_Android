@@ -19,6 +19,7 @@ import com.example.task_eternals_android.MainActivity;
 import com.example.task_eternals_android.Model.TaskModel;
 import com.example.task_eternals_android.R;
 import com.example.task_eternals_android.TaskActivity;
+import com.example.task_eternals_android.TaskDetailsActivity;
 import com.example.task_eternals_android.Utilities.DBHelper;
 
 import java.util.List;
@@ -47,6 +48,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         holder.taskname.setText(item.getTitle());
         holder.duedate.setText(item.getDate() + " " + item.getTime());
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
+
+        holder.taskname.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, TaskDetailsActivity.class);
+                intent.putExtra("task", item);
+                getContext().startActivity(intent);
+            }
+        });
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {

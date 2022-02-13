@@ -32,15 +32,16 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/tasktitlevalue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/screentitlelabel"
-        android:text="Book Tickets"
-        android:layout_toRightOf="@id/tasktitlelabel"
         android:layout_marginStart="10dp"
-        android:textStyle="bold"
         android:layout_marginTop="50dp"
-        android:textSize="20sp"/>
+        android:layout_toRightOf="@id/tasktitlelabel"
+        android:text="Book Tickets"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 
     <TextView
@@ -105,16 +106,16 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/categoryvalue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/duedatevalue"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/categorylabel"
         android:text="Books"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_toRightOf="@id/categorylabel"
-        android:id="@+id/categoryvalue"/>
+        android:textStyle="bold" />
 
 
     <TextView
