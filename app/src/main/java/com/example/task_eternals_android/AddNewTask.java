@@ -41,6 +41,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     private Button mSave;
     DatePickerDialog.OnDateSetListener setListener;
     private DBHelper myDB;
+    String categoryName;
 
     public static AddNewTask newInstance(){
         return new AddNewTask();
@@ -50,6 +51,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_add_new_task, container, false);
+        categoryName = getArguments().getString("category-name");
         return v;
     }
 
@@ -68,12 +70,10 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
         final Bundle bundle = getArguments();
         if(bundle  != null){
-            isUpdate = true;
-            String task = bundle.getString("task");
-            title.setText(task);
-
-            if (task.length() > 0){
-                mSave.setEnabled(false);
+            if (bundle.getBoolean("edit-task")){
+                isUpdate = true;
+                title.setText(bundle.getString("task"));
+                description.setText(bundle.getString("task-description"));
             }
         }
 
@@ -115,7 +115,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     item.setTitle(text);
                     item.setDescription(text1);
                     item.setStatus(0);
-                    item.setCategory(text);
+                    item.setCategory(categoryName);
                     myDB.insertTask(item);
                 }
                 dismiss();

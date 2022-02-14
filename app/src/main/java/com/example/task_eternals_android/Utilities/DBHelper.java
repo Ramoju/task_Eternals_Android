@@ -71,11 +71,11 @@ public class DBHelper extends SQLiteOpenHelper {
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(TASK_NAME, task.getTitle());
+            values.put(TASK_STATUS, task.getStatus());
             values.put(TASK_DESC, task.getDescription());
             values.put(TASK_CATEGORY, task.getCategory());
-            values.put(TASK_DUETIME, task.getDate());
+            values.put(TASK_DUEDATE, task.getDate());
             values.put(TASK_DUETIME, task.getTime());
-            values.put(TASK_STATUS, task.getStatus());
             db.insert(TABLE_TASKS,null, values);
         }
 
@@ -147,13 +147,15 @@ public class DBHelper extends SQLiteOpenHelper {
             return categories;
         }
 
-        public List<TaskModel> getAllTasks(){
+        public List<TaskModel> getAllTasks(String categoryName){
             db = this.getWritableDatabase();
             Cursor cursor = null;
+            String selection = TASK_CATEGORY + "=" + "?";
+            String[] selectionArgs = {categoryName};
             List<TaskModel> tasks = new ArrayList<>();
             db.beginTransaction();
             try {
-                cursor = db.query(TABLE_TASKS, null, null, null,null,null,null);
+                cursor = db.query(TABLE_TASKS, null, selection, selectionArgs,null,null,null);
                 if (cursor != null){
                     if (cursor.moveToFirst()){
                         do {

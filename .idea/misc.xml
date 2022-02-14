@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1875" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.18754249735081452" />
         <entry key="app/src/main/res/layout/activity_task.xml" value="0.2296195652173913" />
+        <entry key="app/src/main/res/layout/activity_task_details.xml" value="0.13134057971014493" />
         <entry key="app/src/main/res/layout/add_new_category.xml" value="0.14361702127659576" />
         <entry key="app/src/main/res/layout/category_card.xml" value="0.25" />
         <entry key="app/src/main/res/layout/task_card.xml" value="0.15070921985815602" />

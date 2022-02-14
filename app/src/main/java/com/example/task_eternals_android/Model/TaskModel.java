@@ -12,6 +12,7 @@ public class TaskModel implements Parcelable {
         description = in.readString();
         date = in.readString();
         time = in.readString();
+        category = in.readString();
         idTask = in.readInt();
         status = in.readInt();
     }
@@ -109,6 +110,7 @@ public class TaskModel implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(date);
         parcel.writeString(time);
+        parcel.writeString(category);
         parcel.writeInt(idTask);
         parcel.writeInt(status);
     }

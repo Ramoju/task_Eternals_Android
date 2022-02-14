@@ -95,7 +95,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         Bundle bundle = new Bundle();
         bundle.putInt("id" , item.getIdTask());
         bundle.putString("task" , item.getTitle());
+        bundle.putString("task-description", item.getDescription());
         bundle.putString("date" , item.getDate());
+        bundle.putBoolean("edit-task", true);
 
         AddNewTask task = new AddNewTask();
         task.setArguments(bundle);

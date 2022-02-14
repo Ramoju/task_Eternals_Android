@@ -53,11 +53,9 @@ public class TaskDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        System.out.println("third screen");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_details);
 
-        System.out.println("third screen after view on create");
 
         categoryTv = findViewById(R.id.categoryvalue);
         titleTv = findViewById(R.id.tasktitlevalue);
@@ -75,6 +73,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         mediaRecorder = new MediaRecorder();
 
         task = getIntent().getParcelableExtra("task");
+        System.out.println("Category in 3rd screen: " + task.getTitle());
         categoryTv.setText(task.getCategory());
         titleTv.setText(task.getTitle());
         descriptionTv.setText(task.getDescription());

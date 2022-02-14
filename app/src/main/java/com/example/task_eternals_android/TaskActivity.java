@@ -2,6 +2,8 @@ package com.example.task_eternals_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +34,8 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
     SearchView searchView;
     CategoryModel category;
     private TextView categoryName;
+    private static FragmentManager fragmentManager;
+    AddNewTask addNewTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +47,13 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         categoryName = findViewById(R.id.txtViewTasks);
         myDB = new DBHelper(TaskActivity.this);
         mList = new ArrayList<>();
+        fragmentManager = getSupportFragmentManager();
 
         category = getIntent().getParcelableExtra("category");
         categoryName.setText(category.getCategoryName());
 
         adapter = new TaskAdapter(myDB,TaskActivity.this);
-        mList = myDB.getAllTasks();
+        mList = myDB.getAllTasks(category.getCategoryName());
         Collections.reverse(mList);
         adapter.setTask(mList);
 
@@ -56,8 +61,7 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
 
-        myDB.getAllTasks();
-        mList = myDB.getAllTasks();
+        mList = myDB.getAllTasks(category.getCategoryName());
         System.out.println(mList.size());
         Collections.reverse(mList);
         adapter.setTask(mList);
@@ -65,7 +69,13 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddNewTask.newInstance().show(getSupportFragmentManager() , AddNewTask.TAG);
+                Bundle data = new Bundle();
+                data.putString("category-name", category.getCategoryName());
+                addNewTask = AddNewTask.newInstance();
+                addNewTask.setArguments(data);
+                System.out.println("In main activity on click of save");
+                addNewTask.show(getSupportFragmentManager() , AddNewTask.TAG);
+                System.out.println("After showing Add new task fragment");
             }
         });
 
@@ -98,7 +108,7 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        mList = myDB.getAllTasks();
+        mList = myDB.getAllTasks(category.getCategoryName());
         Collections.reverse(mList);
         adapter.setTask(mList);
         adapter.notifyDataSetChanged();
