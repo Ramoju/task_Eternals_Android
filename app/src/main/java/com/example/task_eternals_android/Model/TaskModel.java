@@ -3,6 +3,8 @@ package com.example.task_eternals_android.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Comparator;
+
 public class TaskModel implements Parcelable {
     private String title, description, date, time, category;
     private int idTask, status;
@@ -114,4 +116,18 @@ public class TaskModel implements Parcelable {
         parcel.writeInt(idTask);
         parcel.writeInt(status);
     }
+    public static Comparator<TaskModel> titleAZComparator = new Comparator<TaskModel>() {
+        @Override
+        public int compare(TaskModel t1, TaskModel t2) {
+            return t1.getTitle().compareTo(t2.getTitle());
+        }
+    };
+
+    public static Comparator<TaskModel> titleZAComparator = new Comparator<TaskModel>() {
+        @Override
+        public int compare(TaskModel t1, TaskModel t2) {
+            return t2.getTitle().compareTo(t1.getTitle());
+        }
+    };
+
 }

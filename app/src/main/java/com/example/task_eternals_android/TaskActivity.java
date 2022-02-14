@@ -2,21 +2,22 @@ package com.example.task_eternals_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.task_eternals_android.Adapter.TaskAdapter;
-import com.example.task_eternals_android.Adapter.ToDoAdapter;
 import com.example.task_eternals_android.Model.CategoryModel;
 import com.example.task_eternals_android.Model.TaskModel;
 import com.example.task_eternals_android.Utilities.DBHelper;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TaskActivity extends AppCompatActivity implements OnDialogCloseListener {
+public class TaskActivity extends AppCompatActivity implements OnDialogCloseListener, AdapterView.OnItemSelectedListener {
     private RecyclerView mRecyclerView;
     private Button addTask;
     private DBHelper myDB;
@@ -48,6 +49,14 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         myDB = new DBHelper(TaskActivity.this);
         mList = new ArrayList<>();
         fragmentManager = getSupportFragmentManager();
+
+
+        //for spinner to sort
+        Spinner spinner = findViewById(R.id.sortSpinner);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,R.array.sorting, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter1);
+        spinner.setOnItemSelectedListener(this);
 
         category = getIntent().getParcelableExtra("category");
         categoryName.setText(category.getCategoryName());
@@ -112,6 +121,24 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         Collections.reverse(mList);
         adapter.setTask(mList);
         adapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+
+        if(position == 1 ){
+            Collections.sort(mList, TaskModel.titleAZComparator);
+            adapter.notifyDataSetChanged();
+        }
+        if(position == 2 ){
+            Collections.sort(mList, TaskModel.titleZAComparator);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

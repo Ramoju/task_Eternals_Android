@@ -2,4 +2,12 @@
     <string name="app_name">To Do App</string>
     <string name="record_audio">Record Audio</string>
     <string name="play_audio">Play Audio</string>
+    <string-array name="sorting">
+        <item>Select</item>
+        <item>A-Z</item>
+        <item>Z-A</item>
+        <item>DueDate Asc</item>
+        <item>DueDate Dsc</item>
+
+    </string-array>
 </resources>
