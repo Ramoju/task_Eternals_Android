@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="120dp"
     android:layout_height="120dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="5dp"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp">
+    android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="#5CA69F"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,12 +15,12 @@
         android:padding="8dp">
 
         <ImageView
+            android:id="@+id/imagecard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/imagecard"
-            android:scaleType="centerCrop"
             android:layout_marginTop="5dp"
-            android:paddingStart="5dp"/>
+            android:paddingStart="5dp"
+            android:scaleType="centerCrop" />
 
     </RelativeLayout>
 

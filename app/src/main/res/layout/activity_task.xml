@@ -13,9 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="All Tasks"
+        android:layout_marginTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <androidx.appcompat.widget.SearchView
@@ -24,8 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtViewTasks"
         android:layout_alignParentEnd="true"
-        android:baselineAligned="false" >
-    </androidx.appcompat.widget.SearchView>
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="#B2DFDB"
+        android:backgroundTint="#EBF1F8"
+        android:baselineAligned="false"></androidx.appcompat.widget.SearchView>
 
     <TextView
         android:id="@+id/textViewSort"
@@ -34,6 +39,7 @@
         android:layout_below="@+id/searchBar"
         android:padding="10dp"
         android:text="SortBy"
+        android:textColor="#000000"
         android:textSize="16dp"
         android:textStyle="bold" />
 
@@ -44,7 +50,8 @@
         android:layout_below="@+id/searchBar"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@id/textViewSort" />
+        android:layout_toRightOf="@id/textViewSort"
+        android:popupBackground="#EBF1F8" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tasksRecyclerView"
