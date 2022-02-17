@@ -113,9 +113,19 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 String text = title.getText().toString();
                 String text1 = description.getText().toString();
                 String text2 = dateBtn.getText().toString();
+                if (text.isEmpty()) {
+                    title.setError("task name field cannot be empty");
+                    title.requestFocus();
+                    return;
+                }
+                if (text1.isEmpty()) {
+                    description.setError("description cannot be empty");
+                    description.requestFocus();
+                    return;
+                }
 
                 if (finalIsUpdate){
-                    myDB.updateTask(bundle.getInt("id"), text, text1, null, null, text);
+                    myDB.updateTask(bundle.getInt("id"), text, text1, text2, null, text);
                 }else {
                     TaskModel item = new TaskModel();
                     item.setTitle(text);

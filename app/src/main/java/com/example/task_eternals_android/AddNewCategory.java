@@ -88,6 +88,11 @@ public class AddNewCategory extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 String text = mEditText.getText().toString();
+                if (text.isEmpty()) {
+                    mEditText.setError("category cannot be empty");
+                    mEditText.requestFocus();
+                    return;
+                }
                 if(finalisUpdate){
                     mDB.updateCategory(bundle.getInt("id"), text);
                 }else {
