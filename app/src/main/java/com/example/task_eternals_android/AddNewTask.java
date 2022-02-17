@@ -3,8 +3,10 @@ package com.example.task_eternals_android;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -31,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class AddNewTask extends BottomSheetDialogFragment {
     public static final String TAG = "AddNewTask";
@@ -41,7 +44,8 @@ public class AddNewTask extends BottomSheetDialogFragment {
     private Button mSave;
     DatePickerDialog.OnDateSetListener setListener;
     private DBHelper myDB;
-    String categoryName;
+    String categoryName, date;
+    TextView dateBtn;
 
     public static AddNewTask newInstance(){
         return new AddNewTask();
@@ -58,12 +62,13 @@ public class AddNewTask extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        //ss
+        initDatePicker();
         title = view.findViewById(R.id.addTitle);
         description = view.findViewById(R.id.addDescription);
-        tvTimer = view.findViewById(R.id.tvDate);
-        tvDates = view.findViewById(R.id.tvTime);
+        dateBtn = view.findViewById(R.id.btn_date);
+        dateBtn.setText(getTodayDate());
         mSave = view.findViewById(R.id.saveTask);
-
         myDB = new DBHelper(getActivity());
 
         boolean isUpdate = false;
@@ -107,6 +112,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void onClick(View view) {
                 String text = title.getText().toString();
                 String text1 = description.getText().toString();
+                String text2 = dateBtn.getText().toString();
 
                 if (finalIsUpdate){
                     myDB.updateTask(bundle.getInt("id"), text, text1, null, null, text);
@@ -116,13 +122,77 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     item.setDescription(text1);
                     item.setStatus(0);
                     item.setCategory(categoryName);
+                    item.setDate(text2);
                     myDB.insertTask(item);
                 }
                 dismiss();
             }
         });
-        //dateTime();
+        dateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
 
+    }
+
+    private String getTodayDate() {
+        Calendar cal = Calendar.getInstance(Locale.CANADA);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return makeDateString(day, month, year);
+    }
+
+    //
+    private void initDatePicker() {
+        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+                date = makeDateString(day, month, year);
+                dateBtn.setText(date);
+            }
+        };
+        Calendar cal = Calendar.getInstance(Locale.CANADA);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int style = AlertDialog.THEME_HOLO_LIGHT;
+        datePickerDialog = new DatePickerDialog(getContext(),style,dateSetListener,year,month,day);
+    }
+
+    private String makeDateString(int day, int month, int year) {
+        return getMonthFormat(month) + " " + day + ", " + year;
+    }
+    private String getMonthFormat(int month) {
+        if(month == 1)
+            return "JAN";
+        if(month == 2)
+            return "FEB";
+        if(month == 3)
+            return "MAR";
+        if(month == 4)
+            return "APR";
+        if(month == 5)
+            return "MAY";
+        if(month == 6)
+            return "JUN";
+        if(month == 7)
+            return "JUL";
+        if(month == 8)
+            return "AUG";
+        if(month == 9)
+            return "SEP";
+        if(month == 10)
+            return "OCT";
+        if(month == 11)
+            return "NOV";
+        if(month == 12)
+            return "DEC";
+        return "JAN";
     }
 
     @Override
@@ -133,72 +203,4 @@ public class AddNewTask extends BottomSheetDialogFragment {
             ((OnDialogCloseListener)activity).onDialogClose(dialog);
         }
     }
-    //    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_add_new_task);
-//        tvTimer = findViewById(R.id.tvTime);
-//        tvDates = findViewById(R.id.tvDate);
-
-//        // ******** DOUBT ********
-////        myDB = new DBHelper(this);
-////        Boolean isUpdate = false;
-
-
-//    }
-
-//    private void dateTime() {
-//        Calendar calendar = Calendar.getInstance();
-//        final int year = calendar.get(Calendar.YEAR);
-//        final int month = calendar.get(Calendar.MONTH);
-//        final int day = calendar.get(Calendar.DAY_OF_MONTH);
-//
-//
-//        tvDates.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                DatePickerDialog datePickerDialog = new DatePickerDialog(
-//                        AddNewTask.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth
-//                        ,setListener,year,month,day);
-//                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                datePickerDialog.show();
-//            }
-//        });
-//        setListener = new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-//                month = month+1;
-//                String date = dayOfMonth+"/"+month+"/"+year;
-//                tvDates.setText(date);
-//            }
-//        };
-//        tvTimer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                TimePickerDialog timePickerDialog = new TimePickerDialog(
-//                        AddNewTask.this,
-//                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
-//                        new TimePickerDialog.OnTimeSetListener(){
-//                            @Override
-//                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                                tHour = hourOfDay;
-//                                tMinute = minute;
-//                                String time = tHour +":"+ tMinute;
-//                                SimpleDateFormat f24Hours = new SimpleDateFormat("HH:mm");
-//                                try {
-//                                    Date date = f24Hours.parse(time);
-//                                    SimpleDateFormat f12Hours = new SimpleDateFormat("hh:mm aa");
-//                                    tvTimer.setText(f12Hours.format(date));
-//                                } catch (ParseException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        },12,0,false
-//                );
-//                timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//                timePickerDialog.updateTime(tHour,tMinute);
-//                timePickerDialog.show();
-//            }
-//        });
-//        }
 }

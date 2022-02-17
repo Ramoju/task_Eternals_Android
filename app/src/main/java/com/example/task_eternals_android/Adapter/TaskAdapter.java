@@ -46,7 +46,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
         final TaskModel item = mList.get(position);
         holder.taskname.setText(item.getTitle());
-        holder.duedate.setText(item.getDate() + " " + item.getTime());
+        holder.duedate.setText(item.getDate() + " | " + item.getDescription());
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
 
         holder.taskname.setOnClickListener(new View.OnClickListener() {

@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tasknamelabel"
             android:layout_toRightOf="@id/taskcheckbox"
-            android:textColor="@color/white"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textColor="@color/white" />
 
     </RelativeLayout>
 
