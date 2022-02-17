@@ -8,16 +8,16 @@
 
 
     <TextView
+        android:id="@+id/screentitlelabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/screentitlelabel"
-        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:text="Task Details"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:text="Task Details"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tasktitlelabel"

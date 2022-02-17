@@ -163,6 +163,7 @@ public class DBHelper extends SQLiteOpenHelper {
                             task.setIdTask(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_ID)));
                             task.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TASK_NAME)));
                             task.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DESC)));
+                            task.setCategory(cursor.getString(cursor.getColumnIndexOrThrow(TASK_CATEGORY)));
                             task.setDate(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUEDATE)));
                             task.setTime(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUETIME)));
                             task.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_STATUS)));

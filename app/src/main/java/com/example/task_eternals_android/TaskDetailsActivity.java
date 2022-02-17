@@ -74,7 +74,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
 
         task = getIntent().getParcelableExtra("task");
         System.out.println("Category in 3rd screen: " + task.getTitle());
-        categoryTv.setText(task.getCategory());
+        categoryTv.setText(getIntent().getStringExtra("category-name"));
         titleTv.setText(task.getTitle());
         descriptionTv.setText(task.getDescription());
         dueDateTv.setText(task.getDate());
