@@ -62,24 +62,30 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
         categoryName.setText(category.getCategoryName());
 
         adapter = new TaskAdapter(myDB,TaskActivity.this);
-        mList = myDB.getAllTasks(category.getCategoryName());
-        Collections.reverse(mList);
-        adapter.setTask(mList);
+//        mList = myDB.getAllTasks(category.getCategoryName());
+//        Collections.reverse(mList);
+//        adapter.setTask(mList);
 
+        adapter.setHasStableIds(true);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
 
-        mList = myDB.getAllTasks(category.getCategoryName());
+        mList = myDB.getAllTasks(category.getId());
+//        for(int i = 0; i< mList.size(); i++){
+//            System.out.println(mList.get(i).getIdTask()+"descriptionss");
+//        }
         System.out.println(mList.size());
         Collections.reverse(mList);
         adapter.setTask(mList);
+//        System.out.println(mList.get(1).getIdTask()+"idsssssss");
 
         addTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle data = new Bundle();
                 data.putString("category-name", category.getCategoryName());
+                data.putInt("category_id", category.getId());
                 addNewTask = AddNewTask.newInstance();
                 addNewTask.setArguments(data);
                 System.out.println("In main activity on click of save");
@@ -117,7 +123,7 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
 
     @Override
     public void onDialogClose(DialogInterface dialogInterface) {
-        mList = myDB.getAllTasks(category.getCategoryName());
+        mList = myDB.getAllTasks(category.getId());
         Collections.reverse(mList);
         adapter.setTask(mList);
         adapter.notifyDataSetChanged();

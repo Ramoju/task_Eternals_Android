@@ -7,7 +7,15 @@ import java.util.Comparator;
 
 public class TaskModel implements Parcelable {
     private String title, description, date, time, category;
-    private int idTask, status;
+    private int idTask, status,cat_task_id;
+
+    public int getCat_task_id() {
+        return cat_task_id;
+    }
+
+    public void setCat_task_id(int cat_task_id) {
+        this.cat_task_id = cat_task_id;
+    }
 
     protected TaskModel(Parcel in) {
         title = in.readString();
@@ -17,6 +25,7 @@ public class TaskModel implements Parcelable {
         category = in.readString();
         idTask = in.readInt();
         status = in.readInt();
+        cat_task_id = in.readInt();
     }
 
     public TaskModel(String title, String description, String date, String time, int idTask, int status, String category) {
@@ -115,6 +124,7 @@ public class TaskModel implements Parcelable {
         parcel.writeString(category);
         parcel.writeInt(idTask);
         parcel.writeInt(status);
+        parcel.writeInt(cat_task_id);
     }
     public static Comparator<TaskModel> titleAZComparator = new Comparator<TaskModel>() {
         @Override

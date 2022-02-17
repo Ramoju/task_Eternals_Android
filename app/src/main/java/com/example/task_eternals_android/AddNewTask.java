@@ -39,12 +39,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public static final String TAG = "AddNewTask";
 
     private DatePickerDialog datePickerDialog;
-    private TextView title, description, tvTimer, tvDates;
-    int tHour, tMinute;
+    private TextView title, description;
     private Button mSave;
-    DatePickerDialog.OnDateSetListener setListener;
     private DBHelper myDB;
     String categoryName, date;
+    int categoryId;
     TextView dateBtn;
 
     public static AddNewTask newInstance(){
@@ -56,6 +55,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_add_new_task, container, false);
         categoryName = getArguments().getString("category-name");
+        categoryId = getArguments().getInt("category_id");
         return v;
     }
 
@@ -79,6 +79,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 isUpdate = true;
                 title.setText(bundle.getString("task"));
                 description.setText(bundle.getString("task-description"));
+                dateBtn.setText(bundle.getString("date"));
             }
         }
 
@@ -125,7 +126,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 }
 
                 if (finalIsUpdate){
-                    myDB.updateTask(bundle.getInt("id"), text, text1, text2, null, text);
+                    myDB.updateTask(bundle.getInt("id"), text, text1, text2);
                 }else {
                     TaskModel item = new TaskModel();
                     item.setTitle(text);
@@ -133,6 +134,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                     item.setStatus(0);
                     item.setCategory(categoryName);
                     item.setDate(text2);
+                    item.setCat_task_id(categoryId);
                     myDB.insertTask(item);
                 }
                 dismiss();

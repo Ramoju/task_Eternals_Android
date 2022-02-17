@@ -41,7 +41,18 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(adapter);
 
-        db.getAllCategories();
+//        db.getAllCategories();
+//        categoriesList = db.getAllCategories();
+//        for(int i = 0; i<categoriesList.size();i++){
+//            categoriesList.get(i).getCategoryName();
+//            if(!db.getCategoryCompleteTasks(categoriesList.get(i).getCategoryName())){
+//                categoriesList.get(i).setStatus(1);
+//                //db.updateStatus(categoriesList.get(i).getId(),1);
+//                db.updateCategory(categoriesList.get(i).getId(),"gggggg");
+//                System.out.println(categoriesList.get(i).getId()+"Lllllll");
+//                adapter.notifyDataSetChanged();
+//            }
+//        }
         categoriesList = db.getAllCategories();
         Collections.reverse(categoriesList);
         adapter.setCategories(categoriesList);

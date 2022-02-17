@@ -45,6 +45,17 @@ public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final CategoryModel item = categories.get(position);
         holder.categoryName.setText(item.getCategoryName());
         holder.categoryStatus.setChecked(toBoolean(item.getStatus()));
+//        if(!mDb.getCategoryCompleteTasks(item.getCategoryName())){
+//                holder.categoryStatus.setChecked(true);
+//                mDb.updateStatus(item.getId(),1);
+//                System.out.println(item.getId()+"Lllllll");
+//        }
+//        else{
+//                mDb.updateStatus(item.getId(),1);
+//                holder.categoryStatus.setClickable(true);
+//                holder.categoryStatus.setChecked(true);
+//                System.out.println(item.getId()+"EEEEEEEE");
+//        }
         holder.categoryName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

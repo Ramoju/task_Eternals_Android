@@ -44,11 +44,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        final TaskModel item = mList.get(position);
+        TaskModel item = mList.get(holder.getAdapterPosition());
+        System.out.println(position + "adapter@@@@@@@@@@@@@@@");
         holder.taskname.setText(item.getTitle());
         holder.duedate.setText(item.getDate() + " | " + item.getDescription());
         holder.mCheckBox.setChecked(toBoolean(item.getStatus()));
-
         holder.taskname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +62,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(isChecked){
                     myDB.updateTaskStatus(item.getIdTask(),1);
+                    System.out.println(item.getIdTask() + "@@@@@@@@@@@@@@@");
                 }else {
                     myDB.updateTaskStatus(item.getIdTask(),0);
                 }
@@ -85,6 +86,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void deleteTask(int position){
         TaskModel item = mList.get(position);
         myDB.deleteTask(item.getIdTask());
+        System.out.println(item.getIdTask()+"@@@@");
         mList.remove(position);
         notifyItemRemoved(position);
     }

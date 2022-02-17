@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String CAT_STATUS = "STATUS";
         private static final String CAT_ID = "ID";
 
+        private static final String TASK_CAT_ID = "CAT_TASK_ID";
         private static final String TABLE_TASKS = "TASKS";
         private static final String TASK_NAME = "NAME";
         private static final String TASK_STATUS = "STATUS";
@@ -40,13 +41,13 @@ public class DBHelper extends SQLiteOpenHelper {
         private static final String IMG_TASK_NAME = "TASK_ID";
 
     public DBHelper(@Nullable Context context) {
-            super(context, DB_NAME, null, 1);
+            super(context, DB_NAME, null, 4);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "(" + CAT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + CAT_NAME + " TEXT," + CAT_STATUS + " INTEGER)");
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TASK_NAME + " TEXT," + TASK_STATUS + " TEXT," + TASK_DESC + " TEXT," + TASK_CATEGORY + " TEXT," + TASK_DUEDATE + " DATETIME,"+ TASK_DUETIME + " TEXT," + TASK_AUDIO + " BLOB)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TASK_NAME + " TEXT," + TASK_STATUS + " TEXT," + TASK_DESC + " TEXT," + TASK_CATEGORY + " TEXT," + TASK_DUEDATE + " TEXT,"+ TASK_DUETIME + " TEXT," + TASK_AUDIO + " BLOB," + TASK_CAT_ID + " INTEGER)");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + "(" + IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + IMG_TASK_NAME + " TEXT)");
         }
 
@@ -76,6 +77,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(TASK_CATEGORY, task.getCategory());
             values.put(TASK_DUEDATE, task.getDate());
             values.put(TASK_DUETIME, task.getTime());
+            values.put(TASK_CAT_ID, task.getCat_task_id());
             db.insert(TABLE_TASKS,null, values);
         }
 
@@ -95,21 +97,19 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put(CAT_NAME, catName);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
         }
-        public void updateTask(int id, String taskTitle, String taskDescription, String dueDate, String dueTime, String categoryName){
+        public void updateTask(int id, String taskTitle, String taskDescription, String dueDate){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put(TASK_NAME, taskTitle);
             values.put(TASK_DESC, taskDescription);
-            values.put(TASK_CATEGORY, categoryName);
-            values.put(TASK_DUETIME, dueDate);
-            values.put(TASK_DUETIME, dueTime);
+            values.put(TASK_DUEDATE, dueDate);
             db.update(TABLE_TASKS, values , "ID=?" , new String[]{String.valueOf(id)});
         }
 
         public void updateStatus(int id, int status){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(CAT_NAME, status);
+            values.put(CAT_STATUS, status);
             db.update(TABLE_CATEGORIES , values , "ID=?" , new String[]{String.valueOf(id)});
         }
 
@@ -133,7 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     if (cursor.moveToFirst()){
                         do {
                             CategoryModel category = new CategoryModel();
-                            category.setId(cursor.getColumnIndex(CAT_ID));
+                            category.setId(cursor.getInt(cursor.getColumnIndexOrThrow(CAT_ID)));
                             category.setCategoryName(cursor.getString(cursor.getColumnIndexOrThrow(CAT_NAME)));
                             category.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(CAT_STATUS)));
                             categories.add(category);
@@ -147,11 +147,11 @@ public class DBHelper extends SQLiteOpenHelper {
             return categories;
         }
 
-        public List<TaskModel> getAllTasks(String categoryName){
+        public List<TaskModel> getAllTasks(int categoryId){
             db = this.getWritableDatabase();
             Cursor cursor = null;
-            String selection = TASK_CATEGORY + "=" + "?";
-            String[] selectionArgs = {categoryName};
+            String selection = TASK_CAT_ID + "=" + "?";
+            String[] selectionArgs = {String.valueOf(categoryId)};
             List<TaskModel> tasks = new ArrayList<>();
             db.beginTransaction();
             try {
@@ -160,12 +160,13 @@ public class DBHelper extends SQLiteOpenHelper {
                     if (cursor.moveToFirst()){
                         do {
                             TaskModel task = new TaskModel();
-                            task.setIdTask(cursor.getColumnIndex(TASK_ID));
+                            task.setIdTask(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_ID)));
                             task.setTitle(cursor.getString(cursor.getColumnIndexOrThrow(TASK_NAME)));
                             task.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DESC)));
                             task.setDate(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUEDATE)));
                             task.setTime(cursor.getString(cursor.getColumnIndexOrThrow(TASK_DUETIME)));
                             task.setStatus(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_STATUS)));
+                            task.setCat_task_id(cursor.getInt(cursor.getColumnIndexOrThrow(TASK_CAT_ID)));
                             tasks.add(task);
                         }while (cursor.moveToNext());
                     }
@@ -176,4 +177,24 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             return tasks;
         }
+    public boolean getCategoryCompleteTasks(String categoryName){
+        boolean hasInCompleteTask = false;
+        db = this.getWritableDatabase();
+        Cursor cursor = null;
+        String selection = TASK_CATEGORY + "=" + "?" + " AND " + TASK_STATUS + "<>" + "?";
+        String[] selectionArgs = {categoryName,"1"};
+        db.beginTransaction();
+        try{
+            cursor = db.query(TABLE_TASKS, null, selection, selectionArgs,null,null,null);
+            if (cursor != null){
+                System.out.println(cursor.getCount() +"in db helper");
+                hasInCompleteTask = true;
+            }
+        } finally {
+            db.endTransaction();
+            cursor.close();
+        }
+        return hasInCompleteTask;
+
+    }
 }
