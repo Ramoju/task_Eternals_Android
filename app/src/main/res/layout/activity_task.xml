@@ -72,6 +72,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:text="ADD TASK"
+        android:textColorLink="#4DA198"
         android:textSize="20dp" />
 
 

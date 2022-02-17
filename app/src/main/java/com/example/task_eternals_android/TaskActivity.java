@@ -127,7 +127,7 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 
-        if(position == 1 ){
+        if(position == 1){
             Collections.sort(mList, TaskModel.titleAZComparator);
             adapter.notifyDataSetChanged();
         }

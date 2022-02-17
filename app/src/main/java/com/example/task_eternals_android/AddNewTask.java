@@ -92,11 +92,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if(charSequence.toString().equals("")){
                     mSave.setEnabled(false);
-                    mSave.setBackgroundColor(Color.GRAY);
+                    mSave.setBackgroundColor(Color.CYAN);
 
                 }else{
                     mSave.setEnabled(true);
-                    mSave.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    mSave.setBackgroundColor(Color.GRAY);
                 }
             }
 

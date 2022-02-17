@@ -71,10 +71,10 @@ public class AddNewCategory extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 if (charSequence.toString().equals("")){
                     mSaveButton.setEnabled(false);
-                    mSaveButton.setBackgroundColor(Color.GRAY);
+                    mSaveButton.setBackgroundColor(Color.CYAN);
                 }else {
                     mSaveButton.setEnabled(true);
-                    mSaveButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                    mSaveButton.setBackgroundColor(Color.GRAY);
                 }
             }
 
