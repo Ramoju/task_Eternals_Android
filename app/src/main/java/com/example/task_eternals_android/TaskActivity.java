@@ -155,4 +155,13 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mList = myDB.getAllTasks(category.getId());
+        Collections.reverse(mList);
+        adapter.setTask(mList);
+        adapter.notifyDataSetChanged();
+    }
 }

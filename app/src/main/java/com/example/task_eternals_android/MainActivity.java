@@ -74,4 +74,13 @@ public class MainActivity extends AppCompatActivity implements OnDialogCloseList
         adapter.setCategories(categoriesList);
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        categoriesList = db.getAllCategories();
+        Collections.reverse(categoriesList);
+        adapter.setCategories(categoriesList);
+        adapter.notifyDataSetChanged();
+    }
 }

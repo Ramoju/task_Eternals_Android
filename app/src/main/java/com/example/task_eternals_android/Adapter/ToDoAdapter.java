@@ -1,5 +1,6 @@
 package com.example.task_eternals_android.Adapter;
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,17 +47,23 @@ public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final CategoryModel item = categories.get(position);
         holder.categoryName.setText(item.getCategoryName());
         holder.categoryStatus.setChecked(toBoolean(item.getStatus()));
-//        if(!mDb.getCategoryCompleteTasks(item.getCategoryName())){
-//                holder.categoryStatus.setChecked(true);
-//                mDb.updateStatus(item.getId(),1);
-//                System.out.println(item.getId()+"Lllllll");
-//        }
-//        else{
-//                mDb.updateStatus(item.getId(),1);
-//                holder.categoryStatus.setClickable(true);
-//                holder.categoryStatus.setChecked(true);
-//                System.out.println(item.getId()+"EEEEEEEE");
-//        }
+           if (mDb.getCategoryIncompleteTasks(item.getCategoryName())) {
+                holder.categoryStatus.setChecked(true);
+               mDb.updateStatus(item.getId(), 1);
+                System.out.println(item.getId() + "Lllllll");
+            }
+           else {
+                   holder.categoryStatus.setChecked(false);
+           }
+//        else if (mDb.getAllTasks(item.getId()).size() > 0){
+//                if(!mDb.getCategoryIncompleteTasks(item.getCategoryName())) {
+//                        mDb.updateStatus(item.getId(), 1);
+//                        holder.categoryStatus.setClickable(true);
+//                        //holder.categoryStatus.setChecked(false);
+//                        System.out.println(item.getId() + "EEEEEEEE");
+//                }
+ //           }
+
         holder.categoryName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -67,7 +75,14 @@ public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.categoryStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+                        if(b) {
+                                if  (mDb.getAllTasks(item.getId()).size() > 0) {
+                                        if (!mDb.getCategoryIncompleteTasks(item.getCategoryName())) {
+                                                System.out.println("Incomplete tasks exists*******************");
+                                                holder.categoryStatus.setChecked(false);
+                                        }
+                                }
+                        }
                 }
         });
         }

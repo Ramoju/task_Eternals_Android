@@ -188,16 +188,17 @@ public class DBHelper extends SQLiteOpenHelper {
             }
             return tasks;
         }
-    public boolean getCategoryCompleteTasks(String categoryName){
+
+    public boolean getCategoryIncompleteTasks(String categoryName){
         boolean hasInCompleteTask = false;
         db = this.getWritableDatabase();
         Cursor cursor = null;
-        String selection = TASK_CATEGORY + "=" + "?" + " AND " + TASK_STATUS + "<>" + "?";
+        String selection = TASK_CATEGORY + "=" + "?" + " AND " + TASK_STATUS + "=" + "?";
         String[] selectionArgs = {categoryName,"1"};
         db.beginTransaction();
         try{
             cursor = db.query(TABLE_TASKS, null, selection, selectionArgs,null,null,null);
-            if (cursor != null){
+            if (cursor.getCount() > 0){
                 System.out.println(cursor.getCount() +"in db helper");
                 hasInCompleteTask = true;
             }
