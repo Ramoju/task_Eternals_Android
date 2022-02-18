@@ -17,8 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.task_eternals_android.Model.CategoryModel;
+import com.example.task_eternals_android.Model.TaskModel;
 import com.example.task_eternals_android.Utilities.DBHelper;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddNewCategory extends BottomSheetDialogFragment {
     public static final String TAG = "AddNewCategory";
@@ -27,6 +31,7 @@ public class AddNewCategory extends BottomSheetDialogFragment {
     private Button mSaveButton;
 
     private DBHelper mDB;
+    List<TaskModel> tasks;
 
     public static AddNewCategory newInstance(){
         return new AddNewCategory();
@@ -36,6 +41,7 @@ public class AddNewCategory extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.add_new_category, container, false);
+        tasks = new ArrayList<>();
         return v;
     }
 
@@ -95,6 +101,10 @@ public class AddNewCategory extends BottomSheetDialogFragment {
                 }
                 if(finalisUpdate){
                     mDB.updateCategory(bundle.getInt("id"), text);
+//                    tasks = mDB.getAllTasks(bundle.getInt("id"));
+//                    for (int i=0; i<tasks.size(); i++){
+//                        mDB.updateTask(tasks.get(i).getIdTask(), tasks.get(i).getTitle(), tasks.get(i).getDescription(), tasks.get(i).getDate());
+//                    }
                 }else {
                     CategoryModel item = new CategoryModel();
                     item.setCategoryName(text);

@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.task_eternals_android.Model.CategoryModel;
+import com.example.task_eternals_android.Model.ImageModel;
 import com.example.task_eternals_android.Model.TaskModel;
 
 import java.util.ArrayList;
@@ -38,17 +39,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
         private static final String TABLE_IMAGES = "IMAGES";
         private static final String IMAGE_ID = "ID";
+        private static final String IMAGE_URI = "URI";
         private static final String IMG_TASK_NAME = "TASK_ID";
 
     public DBHelper(@Nullable Context context) {
-            super(context, DB_NAME, null, 4);
+            super(context, DB_NAME, null, 5);
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_CATEGORIES + "(" + CAT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + CAT_NAME + " TEXT," + CAT_STATUS + " INTEGER)");
             db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_TASKS + "(" + TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + TASK_NAME + " TEXT," + TASK_STATUS + " TEXT," + TASK_DESC + " TEXT," + TASK_CATEGORY + " TEXT," + TASK_DUEDATE + " TEXT,"+ TASK_DUETIME + " TEXT," + TASK_AUDIO + " BLOB," + TASK_CAT_ID + " INTEGER)");
-            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + "(" + IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + IMG_TASK_NAME + " TEXT)");
+            db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_IMAGES + "(" + IMAGE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + IMG_TASK_NAME + " TEXT," + IMAGE_URI + " TEXT)");
         }
 
         @Override
@@ -106,6 +108,14 @@ public class DBHelper extends SQLiteOpenHelper {
             db.update(TABLE_TASKS, values , "ID=?" , new String[]{String.valueOf(id)});
         }
 
+    public void insertImage(ImageModel image){
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(IMAGE_URI, image.getImageFilePath());
+        values.put(IMG_TASK_NAME, image.getCategoryTaskID());
+        db.insert(TABLE_IMAGES,null, values);
+    }
+
         public void updateStatus(int id, int status){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -116,7 +126,7 @@ public class DBHelper extends SQLiteOpenHelper {
         public void updateTaskStatus(int id, int status){
             db = this.getWritableDatabase();
             ContentValues values = new ContentValues();
-            values.put(CAT_STATUS, status);
+            values.put(TASK_STATUS, status);
             db.update(TABLE_TASKS , values , "ID=?" , new String[]{String.valueOf(id)});
         }
 
@@ -197,5 +207,31 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         return hasInCompleteTask;
 
+    }
+
+    public List<ImageModel> getAllImages() {
+        db = this.getWritableDatabase();
+        Cursor cursor = null;
+        List<ImageModel> images = new ArrayList<>();
+        db.beginTransaction();
+        try {
+            cursor = db.query(TABLE_IMAGES, null, null, null, null, null, null);
+            if (cursor != null){
+                if (cursor.moveToFirst()){
+                    do {
+                        ImageModel image = new ImageModel();
+                        image.setId(cursor.getInt(cursor.getColumnIndexOrThrow(IMAGE_ID)));
+                        image.setImageFilePath(cursor.getString(cursor.getColumnIndexOrThrow(IMAGE_URI)));
+                        image.setCategoryTaskID(cursor.getString(cursor.getColumnIndexOrThrow(IMG_TASK_NAME)));
+                        images.add(image);
+                    }while (cursor.moveToNext());
+                }
+            }
+        }finally {
+            db.endTransaction();
+            cursor.close();
+        }
+
+        return  images;
     }
 }

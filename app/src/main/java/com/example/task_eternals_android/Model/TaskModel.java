@@ -126,6 +126,22 @@ public class TaskModel implements Parcelable {
         parcel.writeInt(status);
         parcel.writeInt(cat_task_id);
     }
+
+    public static Comparator<TaskModel> DateAscendingComparator = new Comparator<TaskModel>() {
+        @Override
+        public int compare(TaskModel t1, TaskModel t2) {
+            return t1.getDate().compareTo(t2.getDate());
+        }
+    };
+
+
+    public static Comparator<TaskModel> DateDescendingComparator = new Comparator<TaskModel>() {
+        @Override
+        public int compare(TaskModel t1, TaskModel t2) {
+            return t2.getDate().compareTo(t1.getDate());
+        }
+    };
+
     public static Comparator<TaskModel> titleAZComparator = new Comparator<TaskModel>() {
         @Override
         public int compare(TaskModel t1, TaskModel t2) {

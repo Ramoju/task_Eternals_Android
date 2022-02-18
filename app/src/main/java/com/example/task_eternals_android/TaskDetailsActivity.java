@@ -1,31 +1,57 @@
 
 package com.example.task_eternals_android;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.content.ClipData;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.task_eternals_android.Adapter.ImageAdapter;
+import com.example.task_eternals_android.Model.ImageModel;
 import com.example.task_eternals_android.Model.TaskModel;
+import com.example.task_eternals_android.Utilities.DBHelper;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -36,8 +62,21 @@ public class TaskDetailsActivity extends AppCompatActivity {
     SeekBar seekbar;
     private static int MICROPHONE_PERMISSION_CODE = 1;
     private boolean isRecording;
+    ImageView capturePhoto;
+    ActivityResultLauncher<String> mGetContent;
+    ActivityResultLauncher<Intent> mGetPermission;
+    ImageModel newImage;
+    List<ImageModel> images;
+    ArrayList<Bitmap> imgLists;
+    DBHelper db;
+    int img_total = 0;
+    ImageAdapter adapter;
+    int PICK_IMAGE_MULTIPLE = 1;
+    Uri imageURI;
+    private Bitmap imagetoStore;
 
-    private static final int[] images = {R.drawable.chinesenoodles, R.drawable.chinesenoodles2, R.drawable.chinesenoodles3, R.drawable.chinesenoodles4, R.drawable.chineserice, R.drawable.chinesenoodles3, R.drawable.chineserice2};
+
+    private static final int[] sampleimages = {R.drawable.chinesenoodles, R.drawable.chinesenoodles2, R.drawable.chinesenoodles3, R.drawable.chinesenoodles4, R.drawable.chineserice, R.drawable.chinesenoodles3, R.drawable.chineserice2};
 
 
     TaskModel task;
@@ -65,6 +104,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         recordbtn = findViewById(R.id.recordbtn);
         playbtn = findViewById(R.id.playbtn);
         recordingAnim = findViewById(R.id.recordinggif);
+        capturePhoto = findViewById(R.id.attachimages);
         //seekbar.setProgress(0);
         //seekbar.setMax(mediaPlayer.getDuration());
         seekbar.setVisibility(View.GONE);
@@ -78,15 +118,52 @@ public class TaskDetailsActivity extends AppCompatActivity {
         titleTv.setText(task.getTitle());
         descriptionTv.setText(task.getDescription());
         dueDateTv.setText(task.getDate());
+        imgLists = new ArrayList<>();
+
+        db = new DBHelper(TaskDetailsActivity.this);
+        images = new ArrayList<>();
+        newImage = new ImageModel();
+        adapter = new ImageAdapter(db,TaskDetailsActivity.this);
+        images = db.getAllImages();
+        Collections.reverse(images);
+        adapter.setImages(images);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
         RecyclerView recyclerView = findViewById(R.id.imagesRV);
         recyclerView.setLayoutManager(layoutManager);
-        ImageAdapter adapter = new ImageAdapter(this, images);
         recyclerView.setAdapter(adapter);
 
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File fileDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_MUSIC);
+
+        //Uri fileUri = FileProvider.getUriForFile(this, "com.example.task_eternals_android.fileprovider", fileDirectory);
+//        mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+//            @Override
+//            public void onActivityResult(Uri result) {
+//                if (result != null) {
+//                    imageURI = result;
+//                    //TaskDetailsActivity.this.grantUriPermission(getPackageName(), result, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION );
+//                    //TaskDetailsActivity.this.getContentResolver().takePersistableUriPermission(result, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                    System.out.println("Result after image pick: " + result.getPath() + result.toString());
+//                    newImage.setImageFilePath(result.toString());
+//                    newImage.setCategoryTaskID(task.getTitle());
+//                    images.add(newImage);
+//                    db.insertImage(newImage);
+//                }
+//            }
+//        });
+//        adapter.notifyDataSetChanged();
+//
+//        mGetPermission = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+//            @Override
+//            public void onActivityResult(ActivityResult result) {
+//                if (result.getResultCode() == TaskDetailsActivity.RESULT_OK) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                        TaskDetailsActivity.this.getContentResolver().takePersistableUriPermission(imageURI, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                    }
+//                }
+//            }
+//        });
 
         //if microphone is on then get the permission
         if (isMicrophoneOn()) {
@@ -185,6 +262,100 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 seekbar.setVisibility(View.GONE);
             }
         });
+        capturePhoto.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onClick(View view) {
+                takePermission();
+//                ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
+//                File fileDirectory = contextWrapper.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//
+//                Uri fileUri = FileProvider.getUriForFile(TaskDetailsActivity.this, "com.example.task_eternals_android.fileprovider", fileDirectory);
+//                //mGetContent.launch("image/*");
+//                Intent intent = new Intent();
+//                intent.setAction(Intent.ACTION_GET_CONTENT);
+//                intent.putExtra(Intent.EXTRA_STREAM, fileUri);
+//                intent.setType("image/png");
+//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                startActivity(intent);
+                Intent intent = new Intent();
+                // setting type to select to be image
+                intent.setType("image/*");
+                // allowing multiple image to be selected
+                //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                if (Build.VERSION.SDK_INT <19) {
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                } else {
+                    intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                }
+
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && null != data) {
+            if (Build.VERSION.SDK_INT < 19) {
+                imageURI = data.getData();
+            } else {
+                imageURI = data.getData();
+                int takeFlags = data.getFlags();
+                takeFlags &= (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                try {
+                    this.getContentResolver().takePersistableUriPermission(imageURI, takeFlags);
+                } catch (SecurityException e) {
+                    e.printStackTrace();
+                }
+            }
+                newImage.setImageFilePath(String.valueOf(imageURI));
+                newImage.setCategoryTaskID(String.valueOf(categoryTv.getText()));
+                images.add(newImage);
+                db.insertImage(newImage);
+                adapter.setImages(images);
+
+            //et_gallery.setText(img_total+" photos selected");
+            adapter.notifyDataSetChanged();
+        } else {
+            // show this if no image is selected
+            Toast.makeText(this, "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void takePermissions() {
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.R) {
+            try {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                mGetPermission.launch(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 101);
+        }
+    }
+
+    private boolean isPermissionGranted() {
+        if(Build.VERSION.SDK_INT==Build.VERSION_CODES.R) {
+            return Environment.isExternalStorageManager();
+        }
+        else {
+            int readExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            return readExternalStoragePermission==PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    public void takePermission() {
+        if(isPermissionGranted()) {
+            Toast.makeText(this, "Permission there", Toast.LENGTH_SHORT).show();
+        } else {
+            takePermissions();
+        }
     }
 
     //check whether the microphone is on or not
@@ -205,4 +376,52 @@ public class TaskDetailsActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},MICROPHONE_PERMISSION_CODE);
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 101: if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            }
+            else {
+                Toast.makeText(this, "No permissions granted", Toast.LENGTH_SHORT).show();
+            }
+            break;
+        }
+    }
+
+    public static String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos = new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        if(temp==null)
+        {
+            return null;
+        }
+        else
+            return temp;
+    }
+
+    public static Bitmap StringToBitMap(String encodedString){
+        try {
+            byte[] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            if(bitmap==null)
+            {
+                return null;
+            }
+            else
+            {
+                return bitmap;
+            }
+
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+
 }

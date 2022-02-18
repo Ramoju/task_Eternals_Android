@@ -64,6 +64,12 @@ public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
                         getContext().startActivity(intent);
                 }
         });
+        holder.categoryStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                }
+        });
         }
 
 public boolean toBoolean(int num){

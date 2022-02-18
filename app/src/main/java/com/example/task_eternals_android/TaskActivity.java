@@ -141,6 +141,14 @@ public class TaskActivity extends AppCompatActivity implements OnDialogCloseList
             Collections.sort(mList, TaskModel.titleZAComparator);
             adapter.notifyDataSetChanged();
         }
+        if(position == 3 ){
+            Collections.sort(mList, TaskModel.DateAscendingComparator);
+            adapter.notifyDataSetChanged();
+        }
+        if(position == 4 ){
+            Collections.sort(mList, TaskModel.DateDescendingComparator);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override

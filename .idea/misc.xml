@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/category_card.xml" value="0.1" />
         <entry key="app/src/main/res/layout/image_card.xml" value="0.2222222222222222" />
         <entry key="app/src/main/res/layout/task_card.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/filepaths.xml" value="0.1140625" />
       </map>
     </option>
   </component>
